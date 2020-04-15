@@ -1,0 +1,14 @@
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\bin\Debug\Module3TP.exe.config
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\bin\Debug\Module3TP.exe
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\bin\Debug\Module3TP.pdb
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\obj\Debug\Module3TP.csprojAssemblyReference.cache
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\obj\Debug\Module3TP.csproj.CoreCompileInputs.cache
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\obj\Debug\Module3TP.exe
+C:\Users\lrabiniaux\ASPnetEni\source\repos\Module3TP\obj\Debug\Module3TP.pdb
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\bin\Debug\Module3TP.exe.config
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\bin\Debug\Module3TP.exe
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\bin\Debug\Module3TP.pdb
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\obj\Debug\Module3TP.csprojAssemblyReference.cache
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\obj\Debug\Module3TP.csproj.CoreCompileInputs.cache
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\obj\Debug\Module3TP.exe
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module3TP\obj\Debug\Module3TP.pdb
