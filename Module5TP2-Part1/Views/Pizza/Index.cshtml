@@ -1,0 +1,56 @@
+﻿@model IEnumerable<BO.Pizza>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Liste des pizzas</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nom)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ingredients)
+        </th>
+        <th></th>
+    </tr>
+
+    @if (Model != null)
+    {
+
+
+        foreach (var pizza in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => pizza.Nom)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => pizza.Pate.Nom)
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var ingredient in pizza.Ingredients)
+                        {
+                            <li>@Html.DisplayFor(modelItem => ingredient.Nom)</li>
+                        }
+                    </ul>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = pizza.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = pizza.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = pizza.Id })
+                </td>
+            </tr>
+        }
+    }
+
+</table>
