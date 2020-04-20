@@ -12,7 +12,7 @@ namespace BO
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength =5)]
+        [StringLength(20, MinimumLength = 5)]
         public string Nom { get; set; }
         
         public Pate Pate { get; set; }

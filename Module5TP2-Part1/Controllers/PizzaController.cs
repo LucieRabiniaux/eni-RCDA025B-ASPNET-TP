@@ -44,7 +44,7 @@ namespace Module5TP2_Part1.Controllers
             try
             {
 
-                if (ModelState.IsValid && pizzaIsValid(pvm))
+                if (ModelState.IsValid && listIngredientsIsDifferent(pvm))
                 {
                     Pizza pizza = pvm.Pizza;
 
@@ -54,19 +54,19 @@ namespace Module5TP2_Part1.Controllers
                     //on récupère la pate et ingrédients selon les ids retournés
                     pizza.Pate = FakeDbPizza.Instance.PatesAvailable.FirstOrDefault(p => p.Id == pvm.idSelectedPate);
 
-                    pizza.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Where(
-                        i => pvm.idSelectedIngredients.Contains(i.Id))
-                        .ToList();
+                    //listIngredientsIsDifferent() -> on vérifie si la pizza n'a pas la même liste d'ingrédients qu'une pizza existante
+                    if (pvm.idSelectedIngredients != null)
+                    {
+                        pizza.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Where(i => pvm.idSelectedIngredients.Contains(i.Id)).ToList();
+                    }
 
                     FakeDbPizza.Instance.ListPizza.Add(pizza);
 
                     return RedirectToAction("Index");
 
-                } else
+                }
+                else
                 {
-                    //envoi de l'erreur à la vue
-                    //pvm.error = errorMessage;
-
                     pvm.Pate = FakeDbPizza.Instance.PatesAvailable.Select(p => new SelectListItem { Text = p.Nom, Value = p.Id.ToString() });
                     pvm.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() });
 
@@ -104,9 +104,7 @@ namespace Module5TP2_Part1.Controllers
         {
             try
             {
-                //string errorMessage = ValidatePizza(pvm);
-
-                if (ModelState.IsValid && pizzaIsValid(pvm))
+                if (ModelState.IsValid && listIngredientsIsDifferent(pvm))
                 {
                     Pizza pizzaToEdit = FakeDbPizza.Instance.ListPizza.FirstOrDefault(p => p.Id == pvm.Pizza.Id);
 
@@ -139,6 +137,50 @@ namespace Module5TP2_Part1.Controllers
         }
 
 
+        //vérifier que deux pizzas n'ont pas la même liste d ingrédients
+        public bool listIngredientsIsDifferent(PizzaCreateEditVM pvm)
+        {
+            bool isDifferent = true;
+
+            Pizza pizzaToCreateOrEdit = pvm.Pizza;
+            var listIngredientsId = pvm.idSelectedIngredients.OrderBy(i => i);
+
+            //comparer si la liste d'ingrédients de la pizza créée ou éditée est la même que celle d'une pizza existante
+            foreach (var pizza in FakeDbPizza.Instance.ListPizza)
+            {
+                //comparer si le nb d'ingrédients est différent
+                if (listIngredientsId.Count() != pizza.Ingredients.Count())
+                {
+                    return isDifferent;
+                }
+                else
+                {
+                    if (listIngredientsId.SequenceEqual(pizza.Ingredients.Select(i => i.Id).OrderBy(i => i)))
+                    {
+                        //on vérifie qu'il ne s'agit pas de la pizza en cours d'edition
+                        if (pizzaToCreateOrEdit.Id == pizza.Id)
+                        {
+                            isDifferent = true;
+                        }
+                        else
+                        {
+                            isDifferent = false;
+                            break;
+                        }
+                    }
+                }
+
+            }
+
+            if (!isDifferent)
+            {
+                ModelState.AddModelError("", "Deux pizzas ne peuvent pas avoir la même liste d'ingrédients.");
+            }
+
+            return isDifferent;
+        }
+
+
         // GET: Pizza/Delete/5
         public ActionResult Delete(int id)
         {
@@ -161,34 +203,6 @@ namespace Module5TP2_Part1.Controllers
                 return View();
             }
         }
-
-        //vérifier que la pizza saisie est valide(nom de la pizza non null, nombre d'ingrédients min et max respectés...)
-        public bool pizzaIsValid(PizzaCreateEditVM pvm)
-        {
-            bool isValid = true;
-
-            return isValid;
-        }
-
-        //Obsolete TP Partie 1
-        //public string ValidatePizza(PizzaCreateEditVM pvm)
-        //{
-        //    string errorMessage = "";
-
-        //    if (pvm.Pizza.Nom == null)
-        //    {
-        //        errorMessage += "Merci de renseigner le champ Nom. ";
-
-        //    }
-
-        //    if (pvm.idSelectedIngredients == null)
-        //    {
-        //        errorMessage += "Merci de selectionner au moins un ingrédient. ";
-        //    }
-
-        //    return errorMessage;
-        //}
-
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BO;
+using Module5TP2_Part1.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,7 @@ namespace Module5TP2_Part1.Models
     public class PizzaCreateEditVM
     {
 
+        [UniquePizzaName(ErrorMessage = "Il existe déjà une pizza portant ce nom")]
         public Pizza Pizza { get; set; }
 
         public IEnumerable<SelectListItem> Pate { get; set; }
@@ -21,12 +23,12 @@ namespace Module5TP2_Part1.Models
         //DropdownlistFor -> choix unique donc simple int
         //ListboxFor -> choix multiples donc list<int>
 
-        [Required]
+        [Required(ErrorMessage = "Merci de sélectionner une pâte")]
         public int idSelectedPate { get; set; } //stocker l'id de la pate selectionnée (sur la vue create et edit)
-        public List<int> idSelectedIngredients { get; set; } //stocker les ids des ingrédients sélectionnés (sur la vue create ou edit)
 
-        //affichage des erreurs
-        //public string error;
+        [MinAndMaxElements(2, 5, ErrorMessage = "Une pizza doit avoir entre 2 et 5 ingrédients")]
+        //[UniqueListOfIngredients(ErrorMessage = "Deux pizzas ne peuvent pas avoir la même liste d'ingrédients.")]
+        public List<int> idSelectedIngredients { get; set; } = new List<int>(); //stocker les ids des ingrédients sélectionnés (sur la vue create ou edit)
 
     }
 }

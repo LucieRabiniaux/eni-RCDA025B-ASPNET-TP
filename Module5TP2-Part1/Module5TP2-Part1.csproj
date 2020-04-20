@@ -129,6 +129,9 @@
     <Compile Include="Models\PizzaCreateEditVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\FakeDbPizza.cs" />
+    <Compile Include="Validation\MinAndMaxElementsAttribute.cs" />
+    <Compile Include="Validation\UniqueListOfIngredientsAttribute.cs" />
+    <Compile Include="Validation\UniquePizzaNameAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
