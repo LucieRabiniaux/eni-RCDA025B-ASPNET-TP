@@ -13,44 +13,42 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <h4>PizzaCreateEditVM</h4>
-        <hr />
+<div class="form-horizontal">
+    <h4>PizzaCreateEditVM</h4>
+    <hr />
 
-        @*Affichage du message d'erreur*@
-        <p class="text-danger">@Model.error</p>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Pizza.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Pizza.Nom, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Pizza.Nom, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Pizza.Pate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.idSelectedPate, Model.Pate, htmlAttributes: new { @class = "form-control" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Pizza.Ingredients, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.ListBoxFor(model => model.idSelectedIngredients, Model.Ingredients, htmlAttributes: new { @class = "form-control" })
-            </div>
-        </div>
-
-
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @Html.CustomSubmit("Sauvegarder")
-                @*<input type="submit" value="Save" class="btn btn-default" />*@
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pizza.Nom, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pizza.Nom, new { htmlAttributes = new { @class = "form-control" } })
         </div>
     </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pizza.Pate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.idSelectedPate, Model.Pate, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pizza.Ingredients, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.ListBoxFor(model => model.idSelectedIngredients, Model.Ingredients, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.CustomSubmit("Sauvegarder")
+            @*<input type="submit" value="Save" class="btn btn-default" />*@
+        </div>
+    </div>
+</div>
 }
 
 <div>

@@ -3,3 +3,4 @@ C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module5TP2-Part1-BO
 C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module5TP2-Part1-BO\bin\Debug\BO.pdb
 C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module5TP2-Part1-BO\obj\Debug\BO.dll
 C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module5TP2-Part1-BO\obj\Debug\BO.pdb
+C:\Users\lrabiniaux\ASPnetEni\repogit\eni-RCDA025B-ASPNET-TP\Module5TP2-Part1-BO\obj\Debug\Module5TP2-Part1-BO.csprojAssemblyReference.cache

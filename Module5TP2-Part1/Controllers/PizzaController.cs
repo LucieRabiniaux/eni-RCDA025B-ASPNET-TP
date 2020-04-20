@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.ModelBinding;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace Module5TP2_Part1.Controllers
 {
@@ -15,7 +16,6 @@ namespace Module5TP2_Part1.Controllers
         // GET: Pizza
         public ActionResult Index()
         {
-            ViewBag.nbPizza = FakeDbPizza.Instance.ListPizza.Count();
             return View(FakeDbPizza.Instance.ListPizza);
         }
 
@@ -43,31 +43,20 @@ namespace Module5TP2_Part1.Controllers
         {
             try
             {
-                string errorMessage = ValidatePizza(pvm);
 
-                if (errorMessage == "")
+                if (ModelState.IsValid && pizzaIsValid(pvm))
                 {
                     Pizza pizza = pvm.Pizza;
 
                     //gestion de l'id de la pizza a créer
-                    if(FakeDbPizza.Instance.ListPizza.Count() == 0) //si c'est la première pizza dans la liste, l'id est 0
-                    {
-                        pizza.Id = 0;
-                    }
-                    else //si il y a deja des pizzas, on récupère l'id max et on l'incrémente
-                    {
-                        int maxId = FakeDbPizza.Instance.ListPizza.Max(p => p.Id);
-                        pizza.Id = maxId +1;
-                    }
-                    
+                    pizza.Id = FakeDbPizza.Instance.ListPizza.Count == 0 ? 1 : FakeDbPizza.Instance.ListPizza.Max(p => p.Id) + 1;
 
                     //on récupère la pate et ingrédients selon les ids retournés
                     pizza.Pate = FakeDbPizza.Instance.PatesAvailable.FirstOrDefault(p => p.Id == pvm.idSelectedPate);
 
-                    foreach (var idIngredient in pvm.idSelectedIngredients)
-                    {
-                        pizza.Ingredients.Add(FakeDbPizza.Instance.IngredientsAvailable.FirstOrDefault(i => i.Id == idIngredient));
-                    }
+                    pizza.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Where(
+                        i => pvm.idSelectedIngredients.Contains(i.Id))
+                        .ToList();
 
                     FakeDbPizza.Instance.ListPizza.Add(pizza);
 
@@ -76,7 +65,7 @@ namespace Module5TP2_Part1.Controllers
                 } else
                 {
                     //envoi de l'erreur à la vue
-                    pvm.error = errorMessage;
+                    //pvm.error = errorMessage;
 
                     pvm.Pate = FakeDbPizza.Instance.PatesAvailable.Select(p => new SelectListItem { Text = p.Nom, Value = p.Id.ToString() });
                     pvm.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() });
@@ -86,8 +75,6 @@ namespace Module5TP2_Part1.Controllers
             }
             catch
             {
-                pvm.error = "Une erreur est survenue, merci de soumettre à nouveau le formulaire";
-
                 pvm.Pate = FakeDbPizza.Instance.PatesAvailable.Select(p => new SelectListItem { Text = p.Nom, Value = p.Id.ToString() });
                 pvm.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() });
                 return View(pvm);
@@ -117,9 +104,9 @@ namespace Module5TP2_Part1.Controllers
         {
             try
             {
-                string errorMessage = ValidatePizza(pvm);
+                //string errorMessage = ValidatePizza(pvm);
 
-                if (errorMessage == "")
+                if (ModelState.IsValid && pizzaIsValid(pvm))
                 {
                     Pizza pizzaToEdit = FakeDbPizza.Instance.ListPizza.FirstOrDefault(p => p.Id == pvm.Pizza.Id);
 
@@ -128,20 +115,13 @@ namespace Module5TP2_Part1.Controllers
                     Pate pate = FakeDbPizza.Instance.PatesAvailable.FirstOrDefault(p => p.Id == pvm.idSelectedPate);
                     pizzaToEdit.Pate = pate;
 
-                    pizzaToEdit.Ingredients = new List<Ingredient>();
-                    foreach (var idIngredient in pvm.idSelectedIngredients)
-                    {
-                        pizzaToEdit.Ingredients.Add(FakeDbPizza.Instance.IngredientsAvailable.FirstOrDefault(i => i.Id == idIngredient));
-                    }
+                    pizzaToEdit.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Where(i => pvm.idSelectedIngredients.Contains(i.Id)).ToList();
 
                     return RedirectToAction("Index");
 
                 }
                 else
                 {
-                    //envoi de l'erreur à la vue
-                    pvm.error = errorMessage;
-
                     pvm.Pate = FakeDbPizza.Instance.PatesAvailable.Select(p => new SelectListItem { Text = p.Nom, Value = p.Id.ToString() });
                     pvm.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() });
 
@@ -151,8 +131,6 @@ namespace Module5TP2_Part1.Controllers
             }
             catch
             {
-                pvm.error = "Une erreur est survenue, merci de soumettre à nouveau le formulaire";
-
                 pvm.Pate = FakeDbPizza.Instance.PatesAvailable.Select(p => new SelectListItem { Text = p.Nom, Value = p.Id.ToString() });
                 pvm.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Select(i => new SelectListItem { Text = i.Nom, Value = i.Id.ToString() });
 
@@ -160,25 +138,6 @@ namespace Module5TP2_Part1.Controllers
             }
         }
 
-
-        //vérifier que la pizza saisie est valide(le nom de la pizza est non null et au moins 1 ingrédient est renseigné)
-        public string ValidatePizza(PizzaCreateEditVM pvm)
-        {
-            string errorMessage = "";
-
-            if (pvm.Pizza.Nom == null)
-            {
-                errorMessage += "Merci de renseigner le champ Nom. ";
-
-            }
-
-            if (pvm.idSelectedIngredients == null)
-            {
-                errorMessage += "Merci de selectionner au moins un ingrédient. ";
-            }
-
-            return errorMessage;
-        }
 
         // GET: Pizza/Delete/5
         public ActionResult Delete(int id)
@@ -202,5 +161,34 @@ namespace Module5TP2_Part1.Controllers
                 return View();
             }
         }
+
+        //vérifier que la pizza saisie est valide(nom de la pizza non null, nombre d'ingrédients min et max respectés...)
+        public bool pizzaIsValid(PizzaCreateEditVM pvm)
+        {
+            bool isValid = true;
+
+            return isValid;
+        }
+
+        //Obsolete TP Partie 1
+        //public string ValidatePizza(PizzaCreateEditVM pvm)
+        //{
+        //    string errorMessage = "";
+
+        //    if (pvm.Pizza.Nom == null)
+        //    {
+        //        errorMessage += "Merci de renseigner le champ Nom. ";
+
+        //    }
+
+        //    if (pvm.idSelectedIngredients == null)
+        //    {
+        //        errorMessage += "Merci de selectionner au moins un ingrédient. ";
+        //    }
+
+        //    return errorMessage;
+        //}
+
+
     }
 }
