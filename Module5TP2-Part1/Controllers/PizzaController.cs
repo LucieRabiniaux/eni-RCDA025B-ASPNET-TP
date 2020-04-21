@@ -53,8 +53,6 @@ namespace Module5TP2_Part1.Controllers
 
                     //on récupère la pate et ingrédients selon les ids retournés
                     pizza.Pate = FakeDbPizza.Instance.PatesAvailable.FirstOrDefault(p => p.Id == pvm.idSelectedPate);
-
-                    //listIngredientsIsDifferent() -> on vérifie si la pizza n'a pas la même liste d'ingrédients qu'une pizza existante
                     if (pvm.idSelectedIngredients != null)
                     {
                         pizza.Ingredients = FakeDbPizza.Instance.IngredientsAvailable.Where(i => pvm.idSelectedIngredients.Contains(i.Id)).ToList();
