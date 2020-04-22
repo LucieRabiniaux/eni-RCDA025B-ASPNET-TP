@@ -1,6 +1,7 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,9 +13,16 @@ namespace Module6TP1.Models
     {
         public Samourai Samourai { get; set; }
 
-        public IEnumerable<SelectListItem> Arme { get; set; } = new List<SelectListItem>();
+        [DisplayName("Arme")]
+        
+        public IEnumerable<SelectListItem> Armes { get; set; } = new List<SelectListItem>();
 
-        public int? IdSelectedArme { get; set; } //Nullable int car un samourai n'a pas forcément une arme associée
+        public int? IdSelectedArme { get; set; } // int? = nullable int car un samourai n'a pas forcément une arme associée
+
+        [DisplayName("Arts martiaux maitrisés")]
+        public IEnumerable<SelectListItem> ArtMartials { get; set; } = new List<SelectListItem>();
+
+        public List<int> IdSelectedArtMartials { get; set; } = new List<int>();
 
     }
 }

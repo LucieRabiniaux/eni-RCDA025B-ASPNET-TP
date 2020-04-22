@@ -103,31 +103,46 @@ namespace Module6TP1.Controllers
             return View(arme);
         }
 
-        // POST: Armes/Delete/5
+
+        //POST: Armes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Arme arme = db.Armes.Find(id);
 
-            //avant de supprimer l'arme, on l'enlève à tous les samourais qui l'utilisent
-            var listSamouraisDb = db.Samourais.ToList();
-            foreach (var samouraiDb in listSamouraisDb)
-            {
-                if(samouraiDb.Arme != null)
-                {
-                    if (samouraiDb.Arme.Id == id)
-                    {
-                        samouraiDb.Arme = null;
-                    }
-                }
+            //On ne peut pas supprimer une arme liée à un samouraï, elle doit être détachée du samouraï au préalable sur la page de modification dudit samourai.
+            //on vérifie donc que l'arme n'appartient à aucun samourai.
 
+            if(!db.Samourais.Any(s => s.Arme.Id == id))
+            {
+                db.Armes.Remove(arme);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            } else
+            {
+                //si l'arme est liée à un samourai on renvoi la vue delete
+                ModelState.AddModelError("", "Impossible de supprimer cette arme car elle est liée à un samourai.");
+                return View(arme);
             }
 
-            db.Armes.Remove(arme);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+
+            //avant de supprimer l'arme, on l'enlève à tous les samourais qui l'utilisent
+            var listSamouraisDb = db.Samourais.ToList();
+            //foreach (var samouraiDb in listSamouraisDb)
+            //{
+            //    if (samouraiDb.Arme != null)
+            //    {
+            //        if (samouraiDb.Arme.Id == id)
+            //        {
+            //            samouraiDb.Arme = null;
+            //        }
+            //    }
+
+            //}
+
         }
+
 
         protected override void Dispose(bool disposing)
         {

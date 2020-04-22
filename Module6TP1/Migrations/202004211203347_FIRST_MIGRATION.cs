@@ -8,6 +8,7 @@
         public override void Up()
         {
             CreateTable(
+                //dbo = schéma par défaut d'une base MySQLServer (MSSQLS)
                 "dbo.Armes",
                 c => new
                     {
@@ -24,7 +25,7 @@
                         Id = c.Int(nullable: false, identity: true),
                         Force = c.Int(nullable: false),
                         Nom = c.String(),
-                        Arme_Id = c.Int(),
+                        Arme_Id = c.Int(),//clé étrangère vers Armes. Nullable car un samourai peut ne pas avoir d'arme.
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Armes", t => t.Arme_Id)

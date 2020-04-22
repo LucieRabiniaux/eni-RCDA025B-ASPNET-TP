@@ -2,12 +2,13 @@
 
 namespace BO
 {
-    public class Arme
+    public class Arme : DbClassWithId
     {
-        public int Id { get; set; }
+   
         [Required]
         public string Nom { get; set; }
-        [Required]
+
+        [Range(1, int.MaxValue, ErrorMessage = "Merci de saisir une valeur supérieure à 0")]
         public int Degats { get; set; }
     }
 }
