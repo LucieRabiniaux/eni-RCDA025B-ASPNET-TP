@@ -154,6 +154,10 @@ namespace Module6TP1.Controllers
                 //on vérifie si des arts martiaux sont associés au samourai
                 if (svm.IdSelectedArtMartials.Count > 0)
                 {
+                    foreach (var artMartial in samouraiDb.ArtMartials)
+                    {
+                        db.Entry(artMartial).State = EntityState.Modified;
+                    }
                     samouraiDb.ArtMartials = db.ArtMartials.Where(a => svm.IdSelectedArtMartials.Contains(a.Id)).ToList();
                 } else
                 {
