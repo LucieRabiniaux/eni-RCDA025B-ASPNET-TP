@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TPOgameLike_BO.Entities;
 
-namespace TPOgameLike_BO
+namespace TPOgameLike_BO.Entities
 {
     public class SolarSystem : IDbEntity
     {

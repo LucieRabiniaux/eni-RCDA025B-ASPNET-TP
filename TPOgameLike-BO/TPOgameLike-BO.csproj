@@ -42,14 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Building.cs" />
-    <Compile Include="FunctionBuilding.cs" />
-    <Compile Include="IDbEntity.cs" />
-    <Compile Include="Planet.cs" />
+    <Compile Include="Entities\Building.cs" />
+    <Compile Include="Entities\FunctionBuilding.cs" />
+    <Compile Include="Entities\IDbEntity.cs" />
+    <Compile Include="Entities\Planet.cs" />
+    <Compile Include="Entities\PowerPlant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resource.cs" />
-    <Compile Include="ResourceGenerator.cs" />
-    <Compile Include="SolarSystem.cs" />
+    <Compile Include="Entities\Resource.cs" />
+    <Compile Include="Entities\ResourceGenerator.cs" />
+    <Compile Include="ResourcesNamesEnum.cs" />
+    <Compile Include="Entities\SolarSystem.cs" />
+    <Compile Include="Validation\LowerThanCurrentDateAttribute.cs" />
+    <Compile Include="Validation\MinAndMaxElementsAttribute.cs" />
+    <Compile Include="Validation\OnlyAuthorizedResourcesNamesAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
